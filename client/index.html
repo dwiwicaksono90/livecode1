@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.18.0/axios.min.js"></script>
+
+    <title>3 Col Portfolio - Start Bootstrap Template</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="css/style.css" rel="stylesheet">
+
+  </head>
+
+  <body>
+    <div id="app">
+
+      <!-- Navigation -->
+      <div class="navbar bg-dark fixed-top">
+        <div class="container">
+          <a class="navbar-brand" href="#">Livecode 1</a>
+          <div class="header-right" v-if="!isLogin">
+            <input type="text" placeholder="email" v-model="loginEmail">
+            <input type="password" placeholder="password" v-model="loginPassword">
+            <button v-on:click="login">Login</button>
+          </div>
+          <div class="header-right" v-if="isLogin">
+            <button v-on:click="logout">LOGOUT</button>
+          </div>
+          <p class="header-right" style="color: white;" v-if="notif">Wrong Email/Password !</p>
+        </div>
+      </div>
+      <br />
+      <!-- Page Content -->
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-3" v-if="isLogin"> 
+            <h4>Add new Event</h4>
+            <div class="list-group">
+              <form>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Event" v-model="createName">
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Location" v-model="createLocation">
+                </div>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Address" v-model="createAddress">
+                </div>
+                <button type="submit" class="btn btn-default">Submit</button>
+              </form>
+            </div>
+            <hr>
+            <h4>Search</h4>
+            <div class="list-group">
+              <form>
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="Search..." v-model="textsearch">
+                </div>
+                <button type="submit" class="btn btn-default" v-on:click="search">Submit</button>
+              </form>
+            </div>
+            <hr>
+            <h4>Maps</h4>
+          </div>
+          <!-- /.col-lg-3 -->
+
+          <div class="col-lg-9">
+            <div class="row">
+
+                <div class="col-lg-4 col-sm-6 portfolio-item" v-for="data in allEvent">
+                    <div class="card h-70">
+                      <div class="card-body">
+                        <h4 class="card-title">
+                          <a href="#">{{data.name}}</a>
+                        </h4>
+                        <div>{{data.location}}</div>
+                        <div>{{data.address}}</div>
+                      </div>
+                    </div>
+                  </div>
+
+<!-- 
+
+              <div class="col-lg-4 col-sm-6 portfolio-item">
+                <div class="card h-70">
+                  <div class="card-body">
+                    <h4 class="card-title">
+                      <a href="#">Event 1</a>
+                    </h4>
+                    <div>Ice BSD</div>
+                    <div>Jl. BSD Grand Boulevard No.1, BSD City, Pagedangan, Tangerang, Banten</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 col-sm-6 portfolio-item">
+                <div class="card h-70">
+                  <div class="card-body">
+                    <h4 class="card-title">
+                      <a href="#">Event 2</a>
+                    </h4>
+                    <div>Ice BSD</div>
+                    <div>Jl. BSD Grand Boulevard No.1, BSD City, Pagedangan, Tangerang, Banten</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 col-sm-6 portfolio-item">
+                <div class="card h-70">
+                  <div class="card-body">
+                    <h4 class="card-title">
+                      <a href="#">Event 3</a>
+                    </h4>
+                    <div>Ice BSD</div>
+                    <div>Jl. BSD Grand Boulevard No.1, BSD City, Pagedangan, Tangerang, Banten</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 col-sm-6 portfolio-item">
+                <div class="card h-70">
+                  <div class="card-body">
+                    <h4 class="card-title">
+                      <a href="#">Event 4</a>
+                    </h4>
+                    <div>Ice BSD</div>
+                    <div>Jl. BSD Grand Boulevard No.1, BSD City, Pagedangan, Tangerang, Banten</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 col-sm-6 portfolio-item">
+                <div class="card h-70">
+                  <div class="card-body">
+                    <h4 class="card-title">
+                      <a href="#">Event 5</a>
+                    </h4>
+                    <div>Ice BSD</div>
+                    <div>Jl. BSD Grand Boulevard No.1, BSD City, Pagedangan, Tangerang, Banten</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 col-sm-6 portfolio-item">
+                <div class="card h-70">
+                  <div class="card-body">
+                    <h4 class="card-title">
+                      <a href="#">Event 6</a>
+                    </h4>
+                    <div>Ice BSD</div>
+                    <div>Jl. BSD Grand Boulevard No.1, BSD City, Pagedangan, Tangerang, Banten</div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-4 col-sm-6 portfolio-item">
+                <div class="card h-70">
+                  <div class="card-body">
+                    <h4 class="card-title">
+                      <a href="#">Event 7</a>
+                    </h4>
+                    <div>Ice BSD</div>
+                    <div>Jl. BSD Grand Boulevard No.1, BSD City, Pagedangan, Tangerang, Banten</div>
+                  </div>
+                </div>
+              </div> -->
+
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+      <!-- /.container -->
+
+      <!-- Footer -->
+      <footer class="py-5 bg-dark">
+        <div class="container">
+          <p class="m-0 text-center text-white">Copyright &copy; Your Website 2018</p>
+        </div>
+        <!-- /.container -->
+      </footer>
+    </div>
+    <script src="./index.js"></script>
+  </body>
+
+</html>
